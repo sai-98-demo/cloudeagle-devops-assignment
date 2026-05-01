@@ -1,4 +1,4 @@
-# CI/CD Design
+# Part 1 – CI/CD Design
 
 ## Branching Strategy
 We follow a simple Git branching strategy:
@@ -64,7 +64,7 @@ We use Rolling Deployment strategy.
 - Ensures zero downtime
 - Safer and suitable for small-scale systems
 
-# Infrastructure Design
+# Part 2 – Infrastructure Design
 
 ## Compute
 We use Google Cloud Run for deployment.
