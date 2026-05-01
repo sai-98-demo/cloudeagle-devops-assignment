@@ -1,22 +1,61 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "sync-service"
+    }
+
     stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/sai-98-demo/cloudeagle-devops-assignment.git'
+            }
+        }
+
         stage('Build') {
             steps {
-                echo "Building application"
+                sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                echo "Running tests"
+                sh 'mvn test'
             }
         }
 
-        stage('Deploy') {
+        stage('Docker Build') {
             steps {
-                echo "Deploying application"
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Deploy to QA') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                echo "Deploying to QA environment"
+            }
+        }
+
+        stage('Deploy to Staging') {
+            when {
+                branch 'staging'
+            }
+            steps {
+                echo "Deploying to Staging environment"
+            }
+        }
+
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                input "Approve production deployment?"
+                echo "Deploying to Production"
             }
         }
     }
